@@ -17,6 +17,9 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const rateLimiter = require('express-rate-limit');
 
+// Not found
+const notFoundMiddleware = require('./middlewares/not-found');
+
 // Middlewares
 app.set('trust proxy', 1);
 app.use(
@@ -30,6 +33,8 @@ app.use(cors());
 app.use(helmet());
 app.use(xss());
 app.use(morgan('dev'));
+
+app.use(notFoundMiddleware);
 
 // Port
 app.set('port', process.env.PORT || 3000);
