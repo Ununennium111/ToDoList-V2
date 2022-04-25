@@ -1,4 +1,5 @@
 const User = require('../models/user-model');
+const { BadRequestError, UnauthenticatedError } = require('../errors');
 
 const register = async (req, res) => {
     const user = await User.create({ ...req.body });
@@ -14,11 +15,19 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     const { email, password } = req.body;
 
-    // Verify if email and password are not empty
+    if (!email || !password) {
+        throw new BadRequestError('All fields are required');
+    }
 
-    // Verify is the user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw new UnauthenticatedError('Invalid credentials');
+    }
 
-    // Verify if the password is correct
+    const isPasswordCorrect = await user.comparePassword(password);
+    if (!isPasswordCorrect) {
+        throw new UnauthenticatedError('Invalid credentials');
+    }
 
     const token = user.createJWT();
     res.status(200).json({ user: { username: user.username }, token });
