@@ -19,6 +19,10 @@ const rateLimiter = require('express-rate-limit');
 
 // Routers
 const authRouter = require('./routes/auth-routes');
+const tasksRouter = require('./routes/tasks-routes');
+
+// Authenticate user
+const authUserMiddleware = require('./middlewares/authentication');
 
 // Not found
 const notFoundMiddleware = require('./middlewares/not-found');
@@ -39,6 +43,7 @@ app.use(morgan('dev'));
 
 // Routes
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/tasks', authUserMiddleware, tasksRouter);
 
 app.use(notFoundMiddleware);
 
