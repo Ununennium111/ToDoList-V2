@@ -2,25 +2,27 @@ const Task = require('../models/task-model');
 const { NotFoundError } = require('../errors');
 
 const getAllUserTasks = async (req, res) => {
-    const tasks = await Task.find({ createdBy: req.user._id }).sort('createdAt');
+    const tasks = await Task.find({ createdBy: req.user.userId }).sort('createdAt');
     res.status(200).json({ tasks });
 }
 
 const createTask = async (req, res) => {
-    req.body.createdBy = req.user._id;
-    const Task = await Task.create(req.body);
+    req.body.createdBy = req.user.userId;
+    const task = await Task.create(req.body);
     res.status(201).json({ task: task });
 }
 
 const deleteTask = async (req, res) => {
     const {
-        user: { _id: userId },
+        user: { userId },
         params: { id: taskId }
     } = req;
 
-    const task = await Task.findByIdAndDelete({
+    console.log(`${userId}, ${taskId}`);
+
+    const task = await Task.findOneAndDelete({
         _id: taskId,
-        createdBy: userId
+        createdBy: userId,
     });
 
     if (!task) {
