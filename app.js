@@ -1,6 +1,9 @@
 // Dotenv
 require('dotenv').config();
 
+// Express async errors
+require('express-async-errors');
+
 // Express
 const express = require('express');
 const app = express();
@@ -27,6 +30,9 @@ const authUserMiddleware = require('./middlewares/authentication');
 // Not found
 const notFoundMiddleware = require('./middlewares/not-found');
 
+// Error handler
+const errorHandlerMiddleware = require('./middlewares/error-handler');
+
 // Middlewares
 app.set('trust proxy', 1);
 app.use(
@@ -46,6 +52,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/tasks', authUserMiddleware, tasksRouter);
 
 app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 // Port
 app.set('port', process.env.PORT || 3000);
