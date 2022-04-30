@@ -12,9 +12,14 @@ const errorHandler = (err, req, res, next) => {
     }
 
     if (err.code && err.code === 11000) {
-        customError.msg = `Duplicate value entered for ${Object.keys(
-            err.keyValue
-        )} field, please choose another value`
+        if (Object.keys(err.keyValue)[0] === 'email') {
+            customError.msg = 'Email already registered, please choose another email';
+        }
+        else {
+            customError.msg = `Duplicate value entered for ${Object.keys(
+                err.keyValue
+            )} field, please choose another value`
+        }
         customError.statusCode = 400
     }
 
