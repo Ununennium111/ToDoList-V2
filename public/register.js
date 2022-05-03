@@ -40,3 +40,11 @@ function showAlert(alert, msg) {
     alertDOM.textContent = msg;
     alertDOM.classList.add(alert);
 }
+
+function verifyToken(){
+    if(localStorage.getItem('AuthToken')){
+        window.location.replace('./index.html');
+    }
+}
+
+verifyToken();
