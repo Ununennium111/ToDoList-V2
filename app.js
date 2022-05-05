@@ -33,6 +33,9 @@ const notFoundMiddleware = require('./middlewares/not-found');
 // Error handler
 const errorHandlerMiddleware = require('./middlewares/error-handler');
 
+// Public
+app.use(express.static('./public'));
+
 // Middlewares
 app.set('trust proxy', 1);
 app.use(
