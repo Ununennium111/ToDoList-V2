@@ -19,7 +19,7 @@ const getTasks = async () => {
         const allTasks = tasks.map((singleTask) => {
             const { _id: taskID, task } = singleTask;
 
-            return `<div data-id="${taskID}"><li class="list-group-item text-break">${task}</li></div>`;
+            return `<li class="list-group-item text-break">${task}<div class="task-items align-items-right"><i class="fa-solid fa-pen edit-task" data-id="${taskID}"></i><i class="fa-solid fa-trash delete-task" data-id="${taskID}""></i></div></li>`;
         }).join('');
 
         ulTasksDOM.innerHTML = allTasks;
@@ -28,14 +28,25 @@ const getTasks = async () => {
     }
 }
 
-ulTasksDOM.addEventListener('click', async (e) => {
+ulTasksDOM.addEventListener('click', (e) => {
     const el = e.target;
 
-    const id = el.parentElement.dataset.id;
+    const id = el.dataset.id;
+
+    if(el.classList.contains('delete-task')){
+        deleteTask(id);
+    }
+    
+    else if(el.classList.contains('edit-task')){
+        window.location.replace(`./updateTask.html?id=${id}`);
+    }
+});
+
+async function deleteTask(taskId){
     const token = localStorage.getItem('AuthToken');
 
     try {
-        await axios.delete(`/api/v1/tasks/${id}`, {
+        await axios.delete(`/api/v1/tasks/${taskId}`, {
             headers: {
                 'Authorization': token
             }
@@ -45,7 +56,7 @@ ulTasksDOM.addEventListener('click', async (e) => {
     } catch (error) {
         console.log(error);
     }
-});
+}
 
 function verifyToken() {
     if (!localStorage.getItem('AuthToken') || !localStorage.getItem('AuthToken').startsWith('Bearer')) {
