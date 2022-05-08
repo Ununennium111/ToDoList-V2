@@ -25,7 +25,19 @@
     width: 275px;
 }
 
-.list-group-item:hover {
-    color: white;
-    background-color: #fa4b5a;
+.task-items {
+    display: inline;
+    margin-left: 170px;
+}
+
+.edit-task:hover {
+    cursor: pointer;
+}
+
+.delete-task {
+    margin-left: 10px;
+}
+
+.delete-task:hover {
+    cursor: pointer;
 }
