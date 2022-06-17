@@ -34,9 +34,3 @@ But if you want to run the dev verison, you can execute the next command:
 ```shell
 npm run dev
 ```
-
-## What's next?
-
-* Add a profile page.
-* Add a delete account button.
-* Fix the style of the delete and edit buttons.
